@@ -32,8 +32,14 @@
 <section>
   <h2>Bio: <span th:text="${chefBio}"></span></h2>
   <h2>Dishes prepared by this chef:</h2>
-  <ul th:each="dish : ${dishes}">
-    <li th:text="${dish.getName()}"></li>
+  <ul>
+    <li th:each="dish : ${dishes}">
+      <span th:text="${dish.getName()}"></span>
+      <form th:action="@{/chefDetails}" method="post" style="display:inline;">
+        <input type="hidden" name="dishId" th:value="${dish.getDishId()}" />
+        <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+      </form>
+    </li>
   </ul>
 </section>
 </body>

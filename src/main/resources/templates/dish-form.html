@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Dish Form</title>
+</head>
+<body>
+
+<h1 th:text="${isEdit} ? 'Edit Dish' : 'Add Dish'"></h1>
+
+<form th:action="${isEdit} ? @{/dishes/edit/{id}(id=${dish.id})} : @{/dishes/add}" method="post">
+  <input type="hidden" th:if="${isEdit}" th:name="id" th:value="${dish.id}" />
+  <div>
+    <label>Dish ID (string):</label>
+    <label>
+      <input type="text" name="dishId" th:value="${dish.dishId}" required />
+    </label>
+  </div>
+  <div>
+    <label>Name:</label>
+    <label>
+      <input type="text" name="name" th:value="${dish.name}" required />
+    </label>
+  </div>
+  <div>
+    <label>Cuisine:</label>
+    <label>
+      <input type="text" name="cuisine" th:value="${dish.cuisine}" required />
+    </label>
+  </div>
+  <div>
+    <label>Preparation Time (minutes):</label>
+    <label>
+      <input type="number" name="preparationTime" th:value="${dish.preparationTime}" min="0" required />
+    </label>
+  </div>
+  <div>
+    <button type="submit" th:text="${isEdit} ? 'Update' : 'Create'"></button>
+    <a href="/dishes">Cancel</a>
+  </div>
+</form>
+
+</body>
+</html>

@@ -1,6 +1,10 @@
 package mk.ukim.finki.wp.lab.model;
 
+import javax.annotation.processing.Generated;
+
 public class Dish {
+
+    private Long id;
     private String dishId;
     private String name;
     private String cuisine;
@@ -9,11 +13,15 @@ public class Dish {
     public Dish() {}
 
     public Dish(String dishId, String name, String cuisine, int preparationTime) {
+        this.id = (long) (Math.random() * 1000);
         this.dishId = dishId;
         this.name = name;
         this.cuisine = cuisine;
         this.preparationTime = preparationTime;
     }
+
+    public Long getId() {return id; }
+    public void setId(Long id) { this.id = id; }
 
     public String getDishId() { return dishId; }
     public void setDishId(String dishId) { this.dishId = dishId; }
