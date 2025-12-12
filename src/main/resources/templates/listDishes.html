@@ -20,6 +20,7 @@
         <th>Name</th>
         <th>Cuisine</th>
         <th>Preparation Time</th>
+        <th>Chef</th>
         <th>Actions</th>
     </tr>
     </thead>
@@ -30,6 +31,7 @@
         <td th:text="${dish.name}"></td>
         <td th:text="${dish.cuisine}"></td>
         <td th:text="${dish.preparationTime}"></td>
+        <td th:text="${dish.chef != null ? dish.chef.firstName + ' ' + dish.chef.lastName : 'None'}"></td>
         <td>
             <a th:href="@{'/dishes/dish-form/' + ${dish.id}}">Edit</a>
             |

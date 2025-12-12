@@ -35,6 +35,19 @@
     </label>
   </div>
   <div>
+    <label>Chef:</label>
+    <label>
+      <select name="chefId">
+        <option value="" th:selected="${dish.chef == null}"></option>
+        <option th:each="chef : ${chefs}"
+                th:value="${chef.id}"
+                th:text="${chef.firstName + ' ' + chef.lastName}"
+                th:selected="${dish.chef != null and dish.chef.id == chef.id}">
+        </option>
+      </select>
+    </label>
+  </div>
+  <div>
     <button type="submit" th:text="${isEdit} ? 'Update' : 'Create'"></button>
     <a href="/dishes">Cancel</a>
   </div>

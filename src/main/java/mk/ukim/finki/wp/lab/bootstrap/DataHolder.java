@@ -3,6 +3,8 @@ package mk.ukim.finki.wp.lab.bootstrap;
 import jakarta.annotation.PostConstruct;
 import mk.ukim.finki.wp.lab.model.Chef;
 import mk.ukim.finki.wp.lab.model.Dish;
+import mk.ukim.finki.wp.lab.repository.ChefRepository;
+import mk.ukim.finki.wp.lab.repository.DishRepository;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
@@ -10,23 +12,33 @@ import java.util.List;
 
 @Component
 public class DataHolder {
-    public static List<Chef> chefs = new ArrayList<>();
-    public static List<Dish> dishes = new ArrayList<>();
+    private final ChefRepository chefRepository;
+    private final DishRepository dishRepository;
+
+    public DataHolder(ChefRepository chefRepository, DishRepository dishRepository) {
+        this.chefRepository = chefRepository;
+        this.dishRepository = dishRepository;
+    }
+
 
     @PostConstruct
     public void init()
     {
-        chefs.add(new Chef(1L, "Branko", "Brankovski", "Dobar kuvar", new ArrayList<>()));
-        chefs.add(new Chef(2L, "Kiro", "Kirovski", "Soliden kuvar", new ArrayList<>()));
-        chefs.add(new Chef(3L, "Stanko", "Stankovski", "Predobar kuvar", new ArrayList<>()));
-        chefs.add(new Chef(4L, "Panko", "Pankovski", "Sreden kuvar", new ArrayList<>()));
-        chefs.add(new Chef(5L, "Danko", "Dankovski", "Losh kuvar", new ArrayList<>()));
+        if(chefRepository.findAll().isEmpty()) {
+            chefRepository.save(new Chef("Branko", "Brankovski", "Dobar kuvar", new ArrayList<>()));
+            chefRepository.save(new Chef("Kiro", "Kirovski", "Soliden kuvar", new ArrayList<>()));
+            chefRepository.save(new Chef("Stanko", "Stankovski", "Predobar kuvar", new ArrayList<>()));
+            chefRepository.save(new Chef("Panko", "Pankovski", "Sreden kuvar", new ArrayList<>()));
+            chefRepository.save(new Chef("Danko", "Dankovski", "Losh kuvar", new ArrayList<>()));
+        }
 
-        dishes.add(new Dish("1", "Grav", "Makedonska", 45));
-        dishes.add(new Dish("2", "Supa", "Makedonska", 15));
-        dishes.add(new Dish("3", "Zelnik", "Makedonska", 60));
-        dishes.add(new Dish("4", "Pizza", "Italijanska", 20));
-        dishes.add(new Dish("5", "Giro", "Grcka", 5));
+        if(dishRepository.findAll().isEmpty()) {
+            dishRepository.save(new Dish("1", "Grav", "Makedonska", 45));
+            dishRepository.save(new Dish("2", "Supa", "Makedonska", 15));
+            dishRepository.save(new Dish("3", "Zelnik", "Makedonska", 60));
+            dishRepository.save(new Dish("4", "Pizza", "Italijanska", 20));
+            dishRepository.save(new Dish("5", "Giro", "Grcka", 5));
+        }
 
     }
 }

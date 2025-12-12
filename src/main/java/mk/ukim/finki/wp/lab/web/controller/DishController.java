@@ -28,16 +28,26 @@ public class DishController {
     }
 
     @PostMapping("/add")
-    public String saveDish(@RequestParam String dishId, @RequestParam String name, @RequestParam String cuisine, @RequestParam int preparationTime)
+    public String saveDish(@RequestParam String dishId, @RequestParam String name, @RequestParam String cuisine, @RequestParam int preparationTime, @RequestParam(required = false) Long chefId)
     {
-        dishService.create(dishId, name, cuisine, preparationTime);
+        Dish newDish = dishService.create(dishId, name, cuisine, preparationTime, chefId);
+
+        if (chefId != null) {
+            chefService.addDishToChef(chefId, newDish.getDishId());
+        }
+
         return "redirect:/dishes";
     }
 
     @PostMapping("/edit/{id}")
-    public String editDish(@PathVariable Long id, @RequestParam String dishId, @RequestParam String name, @RequestParam String cuisine, @RequestParam int preparationTime)
+    public String editDish(@PathVariable Long id, @RequestParam String dishId, @RequestParam String name, @RequestParam String cuisine, @RequestParam int preparationTime, @RequestParam(required = false) Long chefId)
     {
-        dishService.update(id, dishId, name, cuisine, preparationTime);
+        Dish updatedDish = dishService.update(id, dishId, name, cuisine, preparationTime, chefId);
+
+        if (chefId != null) {
+            chefService.addDishToChef(chefId, updatedDish.getDishId());
+        }
+
         return "redirect:/dishes";
     }
 
@@ -52,6 +62,7 @@ public class DishController {
     public String getEditDishForm(@PathVariable Long id, Model model) {
         Dish dish = dishService.findById(id).orElseThrow(RuntimeException::new);
         model.addAttribute("dish", dish);
+        model.addAttribute("chefs", chefService.listChefs());
         model.addAttribute("isEdit", true);
         return "dish-form";
     }
@@ -59,6 +70,7 @@ public class DishController {
     @GetMapping("/dish-form")
     public String getAddDishPage(Model model) {
         model.addAttribute("dish", new Dish());
+        model.addAttribute("chefs", chefService.listChefs());
         model.addAttribute("isEdit", false);
         return "dish-form";
     }
@@ -69,7 +81,7 @@ public class DishController {
                                 @RequestParam String name,
                                 @RequestParam String cuisine,
                                 @RequestParam int preparationTime) {
-        Dish created = dishService.create(dishId, name, cuisine, preparationTime);
+        Dish created = dishService.create(dishId, name, cuisine, preparationTime, chefId);
         chefService.addDishToChef(chefId, created.getDishId());
         return "redirect:/dishes";
     }
