@@ -1,5 +1,7 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="https://www.thymeleaf.org/extras/spring-security">
 <head>
     <meta charset="UTF-8">
     <title>List Dishes</title>
@@ -32,16 +34,22 @@
         <td th:text="${dish.cuisine}"></td>
         <td th:text="${dish.preparationTime}"></td>
         <td th:text="${dish.chef != null ? dish.chef.firstName + ' ' + dish.chef.lastName : 'None'}"></td>
-        <td>
-            <a th:href="@{'/dishes/dish-form/' + ${dish.id}}">Edit</a>
-            |
-            <a th:href="@{'/dishes/delete/' + ${dish.id}}">Delete</a>
-        </td>
+            <td sec:authorize="hasRole('ADMIN')">
+                <a th:href="@{'/dishes/dish-form/' + ${dish.id}}">Edit</a>
+                |
+                <a th:href="@{'/dishes/delete/' + ${dish.id}}">Delete</a>
+            </td>
     </tr>
     </tbody>
 </table>
 
+<div sec:authorize="hasRole('ADMIN')">
 <p><a href="/dishes/dish-form">Add new dish</a></p>
+</div>
+
+<form th:action="@{/logout}" method="post">
+    <button type="submit">Logout</button>
+</form>
 
 </body>
 </html>
